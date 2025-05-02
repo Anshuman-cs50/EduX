@@ -1,0 +1,40 @@
+# Educational Chatbot Project Structure
+
+```
+educational-chatbot/
+│
+├── app.py                 # Main Flask application
+├── requirements.txt       # Python dependencies
+│
+├── static/
+│   ├── css/
+│   │   └── style.css      # Main stylesheet
+│   │
+│   ├── js/
+│   │   ├── main.js        # Main JavaScript
+│   │   └── dashboard.js   # Dashboard functionality
+│
+├── templates/
+│   ├── index.html         # Landing page
+│   ├── dashboard.html     # User dashboard
+│   └── chatbot.html       # Chatbot interface
+│
+├── modules/
+│   ├── __init__.py
+│   ├── llm_handler.py     # Ollama API handling
+│   ├── user_manager.py    # User session management
+│   ├── analytics.py       # User analytics processing
+│   └── prompts/           # LLM prompt templates
+│       ├── math.txt
+│       ├── science.txt
+│       ├── history.txt
+│       ├── english.txt
+│       └── gk.txt         # General Knowledge
+│
+└── database/
+    └── user_data.db       # SQLite database for user data
+```
+ollama pull wizard-math:7b for maths
+ollama pull dolphin-mistral:latest for English 
+ollama pull mistral-7b-openorca for science and history
+ollama pull mistral-7b-instruct for gk
