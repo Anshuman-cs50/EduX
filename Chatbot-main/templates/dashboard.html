@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Educational AI Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container dashboard">
+        <header>
+            <h1>Learning Dashboard</h1>
+            <div class="user-info">
+                <span>Welcome, <strong id="username">{{ session.get('username', 'User') }}</strong></span>
+                <button id="logoutBtn" class="btn small-btn">Logout</button>
+            </div>
+        </header>
+        
+        <main>
+            <section class="subject-selection">
+                <h2>Select a Subject</h2>
+                <div class="subject-grid">
+                    <div class="subject-card" data-subject="math">
+                        <h3>Mathematics</h3>
+                        <p>Algebra, Geometry, Calculus, and more</p>
+                    </div>
+                    <div class="subject-card" data-subject="science">
+                        <h3>Science</h3>
+                        <p>Physics, Chemistry, Biology, and more</p>
+                    </div>
+                    <div class="subject-card" data-subject="history">
+                        <h3>History</h3>
+                        <p>World History, Civilizations, Events</p>
+                    </div>
+                    <div class="subject-card" data-subject="english">
+                        <h3>English</h3>
+                        <p>Grammar, Literature, Composition</p>
+                    </div>
+                    <div class="subject-card" data-subject="gk">
+                        <h3>General Knowledge</h3>
+                        <p>Current Affairs, Geography, Arts, and more</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="analytics">
+                <h2>Your Learning Analytics</h2>
+                <div class="charts-container">
+                    <div class="chart-box">
+                        <h3>Performance by Subject</h3>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                    <div class="chart-box">
+                        <h3>Response Time Analysis</h3>
+                        <canvas id="timeChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div id="recentActivities" class="activity-list">
+                        <p class="loading-message">Loading your recent activities...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>© 2025 Educational AI Chatbot Platform</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
