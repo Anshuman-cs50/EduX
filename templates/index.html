@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational AI Chatbot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>Educational AI Chatbot</h1>
+            <h2>Promoting System 2 Thinking</h2>
+            
+            <div class="cta-buttons">
+                <a href="{{ url_for('login') }}" class="btn primary-btn">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn secondary-btn">Sign Up</a>
+            </div>
+            
+            <div class="app-info">
+                <h3>About This Platform</h3>
+                <p>This educational AI chatbot is designed to promote deeper, more thoughtful learning (System 2 thinking) rather than quick, instinctive responses.</p>
+                <p>The system evaluates not just the correctness of your answers, but also how much time you take to think about them.</p>
+                <p>Available subjects: Mathematics, Science, History, English, and General Knowledge.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

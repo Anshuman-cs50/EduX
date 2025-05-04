@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Chatbot</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: #181829;
+            color: #f3f3fa;
+            font-family: 'Inter', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .home-container {
+            background: #23234a;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px 0 rgba(44, 0, 80, 0.25);
+            padding: 2.5rem 2.5rem 2rem 2.5rem;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .home-container:hover {
+            box-shadow: 0 16px 40px 0 rgba(120, 0, 255, 0.25);
+            transform: translateY(-4px) scale(1.02);
+        }
+        .home-container h1 {
+            color: #fff;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            font-size: 2.3rem;
+        }
+        .home-container p {
+            color: #fff;
+            margin-bottom: 2.2rem;
+            font-size: 1.1rem;
+        }
+        .auth-options {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.8rem 2.2rem;
+            background: linear-gradient(90deg, #b983ff 0%, #7f53ac 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 8px 0 rgba(120, 0, 255, 0.10);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #7f53ac 0%, #b983ff 100%);
+            box-shadow: 0 4px 16px 0 rgba(120, 0, 255, 0.18);
+            transform: translateY(-2px) scale(1.01);
+        }
+        .logo {
+            margin-bottom: 1.2rem;
+        }
+        .logo i {
+            font-size: 2.5rem;
+            color: #b983ff;
+        }
+        @media (max-width: 600px) {
+            .home-container {
+                padding: 1.2rem 0.7rem 1.5rem 0.7rem;
+                max-width: 98vw;
+            }
+            .home-container h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="home-container">
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+        </div>
+            <h1>Welcome to Educational Chatbot</h1>
+            <p>Promoting deep learning through System 2 thinking</p>
+        <main>
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('dashboard') }}" class="btn">Go to Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+            {% else %}
+                <div class="auth-options">
+                    <a href="{{ url_for('login') }}" class="btn">Login</a>
+                    <a href="{{ url_for('signup') }}" class="btn">Sign Up</a>
+                </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

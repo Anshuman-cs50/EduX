@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+    background: #181829;
+    color: #f3f3fa;
+    font-family: 'Inter', Arial, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.auth-card {
+    background: #23234a;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px 0 rgba(44, 0, 80, 0.25);
+    padding: 2.5rem 2rem 2rem 2rem;
+    width: 100%;
+    max-width: 400px;
+    transition: box-shadow 0.3s, transform 0.3s;
+    position: relative;
+}
+.auth-card:hover {
+    box-shadow: 0 16px 40px 0 rgba(120, 0, 255, 0.25);
+    transform: translateY(-4px) scale(1.02);
+}
+
+.auth-card h1 {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.2rem;
+}
+.auth-form label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: #fff;
+    font-size: 1rem;
+}
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background: #23234a;
+    color: #f3f3fa;
+    font-size: 1rem;
+    box-shadow: 0 2px 8px 0 rgba(120, 0, 255, 0.07);
+    outline: none;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.auth-form input:focus {
+    background: #2d2d5a;
+    box-shadow: 0 0 0 2px #b983ff;
+}
+
+.btn {
+    width: 100%;
+    padding: 0.8rem 0;
+    background: linear-gradient(90deg, #b983ff 0%, #7f53ac 100%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 8px 0 rgba(120, 0, 255, 0.10);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+.btn:hover {
+    background: linear-gradient(90deg, #7f53ac 0%, #b983ff 100%);
+    box-shadow: 0 4px 16px 0 rgba(120, 0, 255, 0.18);
+    transform: translateY(-2px) scale(1.01);
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #fff;
+}
+.auth-footer a {
+    color: #fff;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+.auth-footer a:hover {
+    color: #b983ff;
+}
+
+.password-requirements {
+    color: #fff;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #fff;
+}
+
+/* Password visibility toggle (add an eye icon in HTML for this to work) */
+.password-toggle {
+    position: absolute;
+    right: 1.2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #b983ff;
+    font-size: 1.2rem;
+}
+
+@media (max-width: 500px) {
+    .auth-card {
+        padding: 1.2rem 0.7rem 1.5rem 0.7rem;
+        max-width: 98vw;
+    }
+    .auth-card h1 {
+        font-size: 1.5rem;
+    }
+}

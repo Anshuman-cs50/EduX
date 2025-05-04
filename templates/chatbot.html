@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ topic.title() }} Chatbot - Educational AI</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Orbitron:wght@500;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #181829 60%, #2d0b4e 100%);
+            color: #f3f3fa;
+            font-family: 'Inter', 'Orbitron', Arial, sans-serif;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .chatbot-container {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 2rem 1.5rem;
+            background: rgba(35,35,74,0.92);
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(120, 0, 255, 0.18);
+            backdrop-filter: blur(8px);
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            color: #fff;
+            font-family: 'Orbitron', 'Inter', Arial, sans-serif;
+            font-size: 2.3rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .user-info {
+            color: #e0d7ff;
+            font-size: 1.1rem;
+            background: rgba(120,0,255,0.08);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-family: 'Inter', Arial, sans-serif;
+        }
+        .btn, .primary-btn, .secondary-btn {
+            padding: 0.7rem 1.7rem;
+            background: linear-gradient(90deg, #b983ff 0%, #7f53ac 100%);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 2px 12px 0 rgba(120, 0, 255, 0.13);
+            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+        .btn:hover, .primary-btn:hover, .secondary-btn:hover {
+            background: linear-gradient(90deg, #7f53ac 0%, #b983ff 100%);
+            box-shadow: 0 4px 24px 0 rgba(120, 0, 255, 0.22);
+            transform: translateY(-2px) scale(1.01);
+        }
+        main {
+            display: flex;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .chat-interface {
+            flex: 2 1 420px;
+            background: rgba(41,41,90,0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px 0 rgba(120, 0, 255, 0.10);
+            padding: 2rem 1.2rem 1.2rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            min-width: 320px;
+            max-width: 600px;
+        }
+        .chatbox {
+            flex: 1 1 auto;
+            overflow-y: auto;
+            margin-bottom: 1.2rem;
+            max-height: 350px;
+        }
+        .message {
+            margin-bottom: 1.1rem;
+            display: flex;
+        }
+        .message.system .message-content {
+            background: linear-gradient(90deg, #7f53ac 0%, #b983ff 100%);
+            color: #fff;
+            border-radius: 12px 12px 12px 4px;
+            padding: 1rem 1.2rem;
+            box-shadow: 0 2px 12px 0 rgba(120, 0, 255, 0.10);
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1.05rem;
+            animation: fadeIn 0.7s;
+        }
+        .message.system .message-content p {
+            color: #fff !important;
+            font-size: 1.13rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+        .message.system .message-content span[style*="color:#b983ff"] {
+            color: #c084fc !important;
+        }
+        .message.user .message-content {
+            background: rgba(120,0,255,0.13);
+            color: #b983ff;
+            border-radius: 12px 12px 4px 12px;
+            padding: 1rem 1.2rem;
+            margin-left: auto;
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1.05rem;
+            animation: fadeIn 0.7s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .user-input {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .user-input textarea {
+            flex: 1 1 auto;
+            border-radius: 8px;
+            border: none;
+            padding: 0.9rem 1.1rem;
+            font-size: 1.1rem;
+            background: #23234a;
+            color: #f3f3fa;
+            resize: none;
+            min-height: 48px;
+            max-height: 120px;
+            box-shadow: 0 2px 8px 0 rgba(120, 0, 255, 0.07);
+            outline: none;
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .user-input textarea:focus {
+            background: #2d2d5a;
+            box-shadow: 0 0 0 2px #b983ff;
+        }
+        .session-info {
+            flex: 1 1 260px;
+            background: rgba(41,41,90,0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 24px 0 rgba(120, 0, 255, 0.10);
+            padding: 2rem 1.2rem 1.2rem 1.2rem;
+            min-width: 260px;
+            max-width: 340px;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .current-question, .session-stats {
+            background: rgba(35,35,74,0.85);
+            border-radius: 12px;
+            padding: 1.2rem 1rem;
+            box-shadow: 0 2px 8px 0 rgba(120, 0, 255, 0.07);
+        }
+        .current-question h3, .session-stats h3 {
+            color: #fff;
+            margin-bottom: 0.7rem;
+            font-family: 'Orbitron', 'Inter', Arial, sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+        .current-question p.loading {
+            color: #b983ff;
+        }
+        .session-stats ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.2rem 0;
+        }
+        .session-stats ul li {
+            margin-bottom: 0.5rem;
+            color: #e0d7ff;
+            font-size: 1.05rem;
+        }
+        .thinking-indicator {
+            margin-top: 1.2rem;
+        }
+        .thinking-label {
+            color: #b983ff;
+        }
+        .thinking-meter {
+            display: flex;
+            align-items: center;
+            height: 18px;
+            background: #23234a;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 0.2rem;
+        }
+        .meter-section {
+            flex: 1;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #a7a7c7;
+            z-index: 1;
+        }
+        .meter-section.too-fast { background: #3a1c71; }
+        .meter-section.optimal { background: #7f53ac; color: #fff; }
+        .meter-section.too-slow { background: #b983ff; color: #fff; }
+        .indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(180deg, #fff 0%, #b983ff 100%);
+            box-shadow: 0 0 8px #b983ff99;
+            transition: left 0.3s;
+            z-index: 2;
+        }
+        .indicator.fast { background: linear-gradient(180deg, #fff 0%, #b983ff 100%); }
+        .indicator.optimal { background: linear-gradient(180deg, #b983ff 0%, #7f53ac 100%); }
+        .indicator.slow { background: linear-gradient(180deg, #7f53ac 0%, #b983ff 100%); }
+        @media (max-width: 1100px) {
+            main {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .chatbot-container {
+                padding: 1.2rem 0.5rem;
+            }
+        }
+        @media (max-width: 700px) {
+            .chat-interface, .session-info {
+                min-width: 98vw;
+                max-width: 98vw;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container chatbot-container">
+        <header>
+            <h1><i class="fa-solid fa-robot" style="color:#b983ff;margin-right:0.7rem;"></i>{{ topic.title() }} Learning Session</h1>
+            <div class="actions">
+                <button id="backToDashboard" class="btn secondary-btn"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</button>
+                <span class="user-info"><i class="fa-solid fa-user"></i> {{ session.get('username', 'User') }}</span>
+            </div>
+        </header>
+        <main>
+            <div class="chat-interface">
+                <div id="chatbox" class="chatbox">
+                    <div class="message system">
+                        <div class="message-content">
+                            <p>Welcome to your {{ topic.title() }} learning session! I'm your AI tutor, designed to help you develop deeper understanding.</p>
+                            <p>I'll ask you questions and evaluate not just your answers, but also how much time you take to think about them.</p>
+                            <p>Remember: It's better to be correct and thoughtful than quick but wrong!</p>
+                            <p>Let's start with your first question...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-input">
+                    <textarea id="userMessage" placeholder="Type your answer here..." disabled></textarea>
+                    <button id="sendBtn" class="btn primary-btn" disabled><i class="fa-solid fa-paper-plane"></i> Send</button>
+                </div>
+            </div>
+            <div class="session-info">
+                <div class="current-question">
+                    <h3>Current Question</h3>
+                    <div id="questionDisplay">
+                        <p class="loading">Loading your first question...</p>
+                    </div>
+                </div>
+                <div class="session-stats">
+                    <h3>Session Stats</h3>
+                    <ul>
+                        <li>Correct answers: <span id="correctCount">0</span></li>
+                        <li>Incorrect answers: <span id="incorrectCount">0</span></li>
+                        <li>Average response time: <span id="avgTime">0</span>s</li>
+                    </ul>
+                    <div class="thinking-indicator">
+                        <div class="thinking-label">Thinking Speed:</div>
+                        <div class="thinking-meter">
+                            <div class="meter-section too-fast">Fast</div>
+                            <div class="meter-section optimal">Optimal</div>
+                            <div class="meter-section too-slow">Slow</div>
+                            <div id="thinkingIndicator" class="indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const topic = "{{ topic }}";
+            let currentQuestion = null;
+            let questionStartTime = 0;
+            let sessionStats = {
+                correctCount: 0,
+                incorrectCount: 0,
+                totalTime: 0,
+                questionCount: 0
+            };
+            
+            const chatbox = document.getElementById('chatbox');
+            const userMessage = document.getElementById('userMessage');
+            const sendBtn = document.getElementById('sendBtn');
+            const questionDisplay = document.getElementById('questionDisplay');
+            const correctCount = document.getElementById('correctCount');
+            const incorrectCount = document.getElementById('incorrectCount');
+            const avgTime = document.getElementById('avgTime');
+            const thinkingIndicator = document.getElementById('thinkingIndicator');
+            
+            // Initialize
+            fetchNextQuestion();
+            
+            // Event listeners
+            document.getElementById('backToDashboard').addEventListener('click', function() {
+                window.location.href = '/dashboard';
+            });
+            
+            sendBtn.addEventListener('click', sendMessage);
+            userMessage.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+            
+            // Start thinking timer
+            let thinkingTimer = setInterval(updateThinkingIndicator, 1000);
+            
+            function updateThinkingIndicator() {
+                if (!questionStartTime) return;
+                
+                const thinkingTime = (Date.now() - questionStartTime) / 1000; // seconds
+                let position;
+                
+                if (thinkingTime < 5) {
+                    // Too fast zone (0-5 seconds)
+                    position = (thinkingTime / 5) * 33;
+                } else if (thinkingTime < 20) {
+                    // Optimal zone (5-20 seconds)
+                    position = 33 + ((thinkingTime - 5) / 15) * 34;
+                } else {
+                    // Too slow zone (20+ seconds)
+                    const slowness = Math.min(thinkingTime - 20, 20); // Cap at 40 seconds total
+                    position = 67 + (slowness / 20) * 33;
+                }
+                
+                thinkingIndicator.style.left = `${Math.min(position, 100)}%`;
+                
+                // Change color based on zone
+                if (thinkingTime < 5) {
+                    thinkingIndicator.className = 'indicator fast';
+                } else if (thinkingTime < 20) {
+                    thinkingIndicator.className = 'indicator optimal';
+                } else {
+                    thinkingIndicator.className = 'indicator slow';
+                }
+            }
+            
+            function fetchNextQuestion() {
+                userMessage.disabled = true;
+                sendBtn.disabled = true;
+                questionDisplay.innerHTML = '<p class="loading">Loading next question...</p>';
+                
+                fetch('/api/get_questions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ topic: topic, level: 'beginner' })
+                })
+                .then(response => response.json())
+                .then(questions => {
+                    if (questions && questions.length > 0) {
+                        currentQuestion = questions[0]; // Just take the first question
+                        displayQuestion(currentQuestion);
+                        
+                        // Start timing
+                        questionStartTime = Date.now();
+                        userMessage.disabled = false;
+                        sendBtn.disabled = false;
+                        userMessage.focus();
+                    } else {
+                        questionDisplay.innerHTML = '<p class="error">Failed to load question. Please try again.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching questions:', error);
+                    questionDisplay.innerHTML = '<p class="error">Error loading question. Please refresh the page.</p>';
+                });
+            }
+            
+            function displayQuestion(question) {
+                let questionHTML = `
+                    <div class="question">
+                        <p>${question.question}</p>
+                `;
+                
+                // Add multiple choice options if available
+                if (question.options && question.options.length > 0) {
+                    questionHTML += '<div class="options">';
+                    question.options.forEach((option, index) => {
+                        questionHTML += `<div class="option">${option}</div>`;
+                    });
+                    questionHTML += '</div>';
+                }
+                
+                questionHTML += '</div>';
+                questionDisplay.innerHTML = questionHTML;
+            }
+            
+            function sendMessage() {
+                if (!userMessage.value.trim() || !currentQuestion) return;
+                
+                const userAnswer = userMessage.value.trim();
+                const responseTime = (Date.now() - questionStartTime) / 1000; // seconds
+                
+                // Add user message to chat
+                appendMessage('user', userAnswer);
+                
+                // Clear input
+                userMessage.value = '';
+                userMessage.disabled = true;
+                sendBtn.disabled = true;
+                
+                // Show thinking indicator
+                appendMessage('system', '<div class="typing-indicator"><span></span><span></span><span></span></div>', 'thinking');
+                
+                // Send to server
+                fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        topic: topic,
+                        message: userAnswer,
+                        question: currentQuestion.question,
+                        expected_answer: currentQuestion.correct_answer,
+                        start_time: questionStartTime / 1000, // Convert to seconds
+                        level: 'beginner'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Remove thinking indicator
+                    const thinkingMsg = document.querySelector('.message.thinking');
+                    if (thinkingMsg) thinkingMsg.remove();
+                    
+                    // Update stats
+                    if (data.is_correct) {
+                        sessionStats.correctCount++;
+                    } else {
+                        sessionStats.incorrectCount++;
+                    }
+                    sessionStats.totalTime += responseTime;
+                    sessionStats.questionCount++;
+                    
+                    // Update UI
+                    correctCount.textContent = sessionStats.correctCount;
+                    incorrectCount.textContent = sessionStats.incorrectCount;
+                    avgTime.textContent = (sessionStats.totalTime / sessionStats.questionCount).toFixed(1);
+                    
+                    // Add AI response
+                    appendMessage('system', data.response);
+                    
+                    // Add feedback based on correctness and time
+                    let feedbackClass = data.is_correct ? 'correct' : 'incorrect';
+                    feedbackClass += data.is_fast ? ' fast' : ' slow';
+                    
+                    let feedbackMessage = '';
+                    if (data.is_correct && !data.is_fast) {
+                        feedbackMessage = 'Great job! Correct answer with thoughtful consideration.';
+                    } else if (data.is_correct && data.is_fast) {
+                        feedbackMessage = 'Correct, but try to think more deeply next time.';
+                    } else if (!data.is_correct && !data.is_fast) {
+                        feedbackMessage = 'Incorrect, but I appreciate your careful thinking.';
+                    } else {
+                        feedbackMessage = 'Incorrect. Try slowing down to think more carefully.';
+                    }
+                    
+                    appendMessage('feedback', feedbackMessage, feedbackClass);
+                    
+                    // Fetch next question after a delay
+                    setTimeout(() => {
+                        fetchNextQuestion();
+                    }, 3000);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    
+                    // Remove thinking indicator
+                    const thinkingMsg = document.querySelector('.message.thinking');
+                    if (thinkingMsg) thinkingMsg.remove();
+                    
+                    appendMessage('system', 'Sorry, there was an error processing your answer. Let\'s try another question.');
+                    
+                    // Fetch next question
+                    setTimeout(() => {
+                        fetchNextQuestion();
+                    }, 2000);
+                });
+            }
+            
+            function appendMessage(sender, content, extraClass = '') {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${sender} ${extraClass}`;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+                contentDiv.innerHTML = content;
+                
+                messageDiv.appendChild(contentDiv);
+                chatbox.appendChild(messageDiv);
+                
+                // Scroll to bottom after a slight delay
+                setTimeout(() => {
+                    chatbox.scrollTop = chatbox.scrollHeight;
+                }, 100); // Delay ensures DOM is updated
+            }
+        });
+    </script>
+</body>
+</html>
