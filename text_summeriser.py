@@ -24,7 +24,7 @@ summary_lengths = {
 styles = {
     "bullets": [
         "bullets", "bullet points", "point-wise", "points", "dot points", 
-        "key pts", "key points", "• style", "📌 style", "summarized points", 
+        "key pts", "key points", "• style", "style", "summarized points", 
         "no para", "list form", "structured bullets"
     ],
     "paragraph": [
@@ -43,7 +43,7 @@ language_levels = {
     "simple": [
         "simple", "easy", "basic", "plain", "casual", "layman", "beginner", 
         "dumb it down", "explain like im 5", "no jargon", "simplified", 
-        "baby level", "not too technical", "in easy terms", "💡 easy"
+        "baby level", "not too technical", "in easy terms", "easy"
     ],
     "intermediate": [
         "intermediate", "moderate", "average", "mid-level", "some jargon", 
@@ -158,22 +158,16 @@ def extract_summary_preferences(user_input):
     }
 
 # Test example
-user_texts = [
-    "This is a brief overview of the Cold War, covering the key events in a simple format that even beginners can understand.",
-    "In-depth research has shown that simple sugars can have complex effects on human metabolism over time.",
-    "The author presents the theory in bullet points to simplify explanation, but each point is quite detailed.",
-    "Simple instructions were given to soldiers during the battle, but executing them was far from easy.",
-    "This document is divided into sections: the first being a quick introduction, the second a deep analysis, and the third a critique.",
-    "Key points from the article include health, education, and climate reform, which are elaborated in the main body.",
-    "Students often prefer one paragraph summaries, but the professor required a ten-page analysis.",
-    "He gave a highlight of the economic reforms during the session, but the rest of the speech was ignored.",
-    "Though the book appears academic, the underlying tone is surprisingly sarcastic and informal.",
-    "Short-term effects of the medicine include fatigue and nausea, while long-term data is still being collected."
-]
+# user_texts = [
+#     "This is a brief overview of the Cold War, covering the key events in a simple format that even beginners can understand.",
+#     "In-depth research has shown that simple sugars can have complex effects on human metabolism over time.",
+#     "The author presents the theory in bullet points to simplify explanation, but each point is quite detailed.",
+#     "Simple instructions were given to soldiers during the battle, but executing them was far from easy.",
+#     "This document is divided into sections: the first being a quick introduction, the second a deep analysis, and the third a critique.",
+#     "Key points from the article include health, education, and climate reform, which are elaborated in the main body.",
+#     "Students often prefer one paragraph summaries, but the professor required a ten-page analysis.",
+#     "He gave a highlight of the economic reforms during the session, but the rest of the speech was ignored.",
+#     "Though the book appears academic, the underlying tone is surprisingly sarcastic and informal.",
+#     "Short-term effects of the medicine include fatigue and nausea, while long-term data is still being collected."
+# ]
 
-for user_input in user_texts:
-    result = is_pref(user_input)
-    if result:
-        print(f"Detected preference score: {result}")
-    else:
-        print("No preference detected. Using default settings.")
