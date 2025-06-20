@@ -1,0 +1,236 @@
+{% set active_page = 'subject' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Educational AI Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>🎓</span> EDUX
+        </div>
+        <nav>
+            <a href="#subject-section">Subject</a>
+            <a href="#recent-activity-section">Recent Activity</a>
+            <a href="#text-summarizer-section">Text Summarizer</a>
+            <a href="#youtube-extractor-section">YouTube Slide Extractor</a>
+        </nav>
+        <div class="sidebar-footer">
+            <span>&copy; 2024 EDUX</span>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container dashboard">
+            <header>
+                <h1>Learning Dashboard</h1>
+                <div class="user-info">
+                    <span>Welcome, <strong id="username">{{ session.get('username', 'User') }}</strong></span>
+                    <button id="logoutBtn" class="btn small-btn">Logout</button>
+                </div>
+            </header>
+            
+            <main>
+                <section class="subject-selection" id="subject-section">
+                    <h2>Select a Subject</h2>
+                    <div class="subject-grid">
+                        <div class="subject-card" data-subject="math">
+                            <h3>Mathematics</h3>
+                            <p>Algebra, Geometry, Calculus, and more</p>
+                        </div>
+                        <div class="subject-card" data-subject="science">
+                            <h3>Science</h3>
+                            <p>Physics, Chemistry, Biology, and more</p>
+                        </div>
+                        <div class="subject-card" data-subject="history">
+                            <h3>History</h3>
+                            <p>World History, Civilizations, Events</p>
+                        </div>
+                        <div class="subject-card" data-subject="english">
+                            <h3>English</h3>
+                            <p>Grammar, Literature, Composition</p>
+                        </div>
+                        <div class="subject-card" data-subject="gk">
+                            <h3>General Knowledge</h3>
+                            <p>Current Affairs, Geography, Arts, and more</p>
+                        </div>
+                    </div>
+                    
+                    <!-- New Take Test Button -->
+                    <div class="test-button-container">
+                        <button id="takeTestBtn" class="btn primary-btn">Take Test</button>
+                    </div>
+                </section>
+                
+                <section class="analytics" id="recent-activity-section">
+                    <h2>Your Learning Analytics</h2>
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <h3>Performance by Subject</h3>
+                            <canvas id="performanceChart"></canvas>
+                        </div>
+                        <div class="chart-box">
+                            <h3>Response Time Analysis</h3>
+                            <canvas id="timeChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="recent-activity" id="recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivities" class="activity-list">
+                            <p class="loading-message">Loading your recent activities...</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="text-summarizer" id="text-summarizer-section">
+                    <h2>Text Summarizer</h2>
+                    <textarea id="textInput" placeholder="Enter or paste your text here..."></textarea>
+                    <div>
+                        <label for="difficulty">Difficulty:</label>
+                        <select id="difficulty">
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="length">Length:</label>
+                        <input type="number" id="length" min="1" max="100">
+                    </div>
+                    <button id="summarizeBtn">Summarize</button>
+                    <div id="summaryOutput"></div>
+                </section>
+
+                <section class="youtube-extractor" id="youtube-extractor-section">
+                    <h2>YouTube Slide Extractor</h2>
+                    <div class="card" style="background: var(--card-color); color: var(--text-secondary); padding: 2rem; text-align: center; border-radius: var(--border-radius); margin-top: 1.5rem;">
+                        <a href="{{ url_for('youtube_extractor') }}" class="btn primary-btn" style="font-size: 1.2rem;">
+                            Open YouTube Slide Extractor
+                        </a>
+                        <p style="margin-top: 1rem;">Extract slides and summaries from YouTube videos!</p>
+                    </div>
+                </section>
+            </main>
+            
+            <footer>
+                <p>EDUX Learning Platform</p>
+            </footer>
+        </div>
+
+        <!-- Modal for Subject and Topic Selection -->
+        <div id="testModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Create New Test</h2>
+                <form id="testForm">
+                    <div class="form-group">
+                        <label for="testSubject">Subject:</label>
+                        <select id="testSubject" required>
+                            <option value="">Select a subject</option>
+                            <option value="math">Mathematics</option>
+                            <option value="science">Science</option>
+                            <option value="history">History</option>
+                            <option value="english">English</option>
+                            <option value="gk">General Knowledge</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="testTopic">Topic:</label>
+                        <input type="text" id="testTopic" placeholder="Enter specific topic" required>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Generate Test</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Test Interface -->
+        <div id="testInterface" class="test-interface">
+            <div class="test-container">
+                <div class="test-header">
+                    <h2>Test: <span id="testTitle">Subject - Topic</span></h2>
+                    <div class="test-info">
+                        <span id="questionCounter">Question 1/10</span>
+                        <span id="timer">Time: 00:00</span>
+                    </div>
+                    <button id="closeTestBtn" class="btn small-btn">Exit Test</button>
+                </div>
+                
+                <div id="questionContainer" class="question-container">
+                    <div id="loadingQuestions" class="loading-questions">
+                        <p>Generating questions...</p>
+                        <div class="spinner"></div>
+                    </div>
+                    
+                    <div id="questionContent" style="display: none;">
+                        <h3 id="questionText">Question text appears here...</h3>
+                        <div id="optionsContainer" class="options-container">
+                            <!-- Options will be dynamically inserted here -->
+                        </div>
+                    </div>
+                    
+                    <div class="test-navigation">
+                        <button id="prevQuestionBtn" class="btn nav-btn" disabled>Previous</button>
+                        <button id="nextQuestionBtn" class="btn nav-btn">Next</button>
+                        <button id="submitTestBtn" class="btn primary-btn" style="display: none;">Submit Test</button>
+                    </div>
+                </div>
+                
+                <!-- Test Results -->
+                <div id="testResults" class="test-results" style="display: none;">
+                    <h2>Test Results</h2>
+                    <div class="results-summary">
+                        <div class="result-item">
+                            <span class="result-label">Score:</span>
+                            <span id="finalScore" class="result-value">0/10</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Percentage:</span>
+                            <span id="scorePercentage" class="result-value">0%</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Time Taken:</span>
+                            <span id="timeTaken" class="result-value">00:00</span>
+                        </div>
+                    </div>
+                    
+                    <h3>Detailed Analysis</h3>
+                    <div id="questionsReview" class="questions-review">
+                        <!-- Review will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="results-actions">
+                        <button id="retakeTestBtn" class="btn secondary-btn">Retake Test</button>
+                        <button id="backToDashboardBtn" class="btn primary-btn">Back to Dashboard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/test.js') }}"></script>
+    <script>
+    document.querySelectorAll('.sidebar nav a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+    // Fix logout button
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            window.location.href = '/logout';
+        });
+    }
+    </script>
+</body>
+</html>

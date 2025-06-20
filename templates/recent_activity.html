@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recent Activity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>🎓</span> EDUX
+        </div>
+        <nav>
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('dashboard') }}">Subject</a>
+                <a href="{{ url_for('recent_activity') }}" class="active">Recent Activity</a>
+                <a href="{{ url_for('text_summarizer') }}">Text Summarizer</a>
+                <a href="{{ url_for('youtube_extractor') }}">YouTube Slide Extractor</a>
+            {% else %}
+                <a href="#about">About</a>
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}">Sign Up</a>
+            {% endif %}
+        </nav>
+        <div class="sidebar-footer">
+            <span>&copy; 2024 EDUX</span>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1>Recent Activity</h1>
+        <p>This is the Recent Activity page.</p>
+    </div>
+</body>
+</html> 

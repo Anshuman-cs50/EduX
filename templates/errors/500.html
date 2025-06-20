@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Error</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container error-container">
+        <h1>500 - Server Error</h1>
+        <p>Something went wrong on our end. We're working to fix it.</p>
+        <a href="{{ url_for('home') }}" class="btn">Return Home</a>
+    </div>
+</body>
+</html>

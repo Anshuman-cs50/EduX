@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Chatbot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>🎓</span> EDUX
+        </div>
+        <nav>
+            {% if 'user_id' in session %}
+                <a href="{{ url_for('dashboard') }}">Subject</a>
+                <a href="{{ url_for('recent_activity') }}">Recent Activity</a>
+                <a href="{{ url_for('text_summarizer') }}">Text Summarizer</a>
+                <a href="{{ url_for('youtube_extractor') }}">YouTube Slide Extractor</a>
+            {% else %}
+                <a href="#about">About</a>
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}">Sign Up</a>
+            {% endif %}
+        </nav>
+        <div class="sidebar-footer">
+            <span>&copy; 2024 EDUX</span>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <h1>Welcome to Educational Chatbot</h1>
+                <p>Promoting deep learning through System 2 thinking</p>
+            </header>
+            <section id="about" style="margin-top: 2rem; background: var(--card-color); padding: 2rem; border-radius: var(--border-radius); box-shadow: var(--shadow-md);">
+                <h2 style="color: var(--primary-color);">About Us</h2>
+                <p><strong>Purpose:</strong> The purpose of this project is to develop a lightweight, AI-powered web app that dynamically generates math problems, gives real-time feedback and hints, and tracks user progress—all without the need for a backend database or login system. This is designed for quick deployment, demo-ready performance, and scalability post-hackathon.</p>
+                <p><strong>Scope:</strong> eduX Lite focuses on a single subject (Math), using GPT-4 to generate and evaluate algebra problems. It will track mastery locally, provide step-by-step feedback, and unlock harder problems as the user improves. The app will run in the browser using a simple frontend and OpenAI APIs.</p>
+            </section>
+            <main>
+                {% if 'user_id' in session %}
+                    <a href="{{ url_for('dashboard') }}" class="btn">Go to Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="btn">Logout</a>
+                {% else %}
+                    <div class="auth-options">
+                        <a href="{{ url_for('login') }}" class="btn">Login</a>
+                        <a href="{{ url_for('signup') }}" class="btn">Sign Up</a>
+                    </div>
+                {% endif %}
+            </main>
+        </div>
+    </div>
+</body>
+</html>
